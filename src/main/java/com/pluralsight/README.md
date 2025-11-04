@@ -29,9 +29,11 @@ It also manages **sales** and **lease contracts**, saving all dealership data to
 ---
 
 ## 🎥 Demo
-![Car Dealership Demo](demo.gif)
 
----
+
+
+---![demo](https://github.com/user-attachments/assets/7f5ad25c-69e3-49e2-a824-272ae1546f33)
+
 
 ## Author
 **Beimnet Kifle**
