@@ -26,7 +26,6 @@ public class UserInterface {
             System.out.println("7. Get all vehicles");
             System.out.println("8. Add vehicle");
             System.out.println("9. Remove vehicle");
-            System.out.println("10. Sell or Lease a Vehicle");
             System.out.println("99. Quit");
 
             System.out.print("Enter your choice: ");
@@ -59,9 +58,6 @@ public class UserInterface {
                     break;
                 case "9":
                     processRemoveVehicleRequest();
-                    break;
-                case "10":
-                    processSellOrLeaseVehicle();
                     break;
                 case "99":
                     quit = true;
@@ -198,57 +194,4 @@ public class UserInterface {
         }
     }
 
-    // 🆕 New method added — Sell or Lease Vehicle
-    public void processSellOrLeaseVehicle() {
-        System.out.print("Enter VIN of the vehicle to sell or lease: ");
-        int vin = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
-        Vehicle vehicle = null;
-        for (Vehicle v : dealership.getAllVehicles()) {
-            if (v.getVin() == vin) {
-                vehicle = v;
-                break;
-            }
-        }
-
-        if (vehicle == null) {
-            System.out.println("Vehicle not found.");
-            return;
-        }
-
-        System.out.print("Enter date (MM/DD/YYYY): ");
-        String date = scanner.nextLine();
-        System.out.print("Enter customer name: ");
-        String name = scanner.nextLine();
-        System.out.print("Enter customer email: ");
-        String email = scanner.nextLine();
-
-        System.out.print("Is this a (S)ale or (L)ease? ");
-        String type = scanner.nextLine().toUpperCase();
-
-        Contract contract = null;
-
-        if (type.equals("S")) {
-            System.out.print("Is this financed? (yes/no): ");
-            boolean financed = scanner.nextLine().equalsIgnoreCase("yes");
-            contract = new SalesContract(date, name, email, vehicle, financed);
-        } else if (type.equals("L")) {
-            contract = new LeaseContract(date, name, email, vehicle);
-        } else {
-            System.out.println("Invalid type. Returning to menu.");
-            return;
-        }
-
-        ContractFileManager contractFileManager = new ContractFileManager();
-        contractFileManager.saveContract(contract);
-
-        dealership.removeVehicle(vehicle);
-        DealershipFileManager manager = new DealershipFileManager();
-        manager.saveDealership(dealership);
-
-        System.out.println("\n✅ Contract completed successfully!");
-        System.out.printf("Total Price: $%.2f | Monthly Payment: $%.2f\n",
-                contract.getTotalPrice(), contract.getMonthlyPayment());
-    }
 }
